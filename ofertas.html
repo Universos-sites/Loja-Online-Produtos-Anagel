@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+      body {  
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      padding: 0;
+    }
+
+    header {
+      background-color: #ffffff00;
+      color: rgb(0, 0, 0);
+      padding: 1rem;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    /* Remove o efeito azul ao tocar/clicar em links e botões */
+* {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+  padding: 0 1rem;
+}
+
+.search-box input {
+  flex: 1;
+  padding: 0.8rem 1rem;
+  border: none;
+  border-radius: 30px;
+  outline: none;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.search-box input:focus {
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+}
+
+.search-box button {
+  margin-left: -45px;
+  background: none;
+  border: none;
+  color: #3498db;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #ffffff;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 8px 0;
+  z-index: 1000;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.bottom-nav .nav-item {
+  flex: 1;
+  text-align: center;
+  color: #555;
+  font-size: 12px;
+  text-decoration: none;
+  transition: color 0.2s;
+  position: relative; /* necessário para posicionar o badge */
+}
+
+.bottom-nav .nav-item i {
+  font-size: 20px;
+  margin-bottom: 4px;
+  display: block;
+  transition: transform 0.2s ease;
+}
+
+.bottom-nav .nav-item span {
+  display: block;
+  font-size: 11px;
+}
+
+.bottom-nav .nav-item:hover {
+  color: #e67e22;
+}
+
+.bottom-nav .nav-item:hover i {
+  transform: scale(1.1);
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(154px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+
+    .product {
+      background-color: white;
+      border-radius: 10px;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s;
+    }
+
+    .product:hover {
+      transform: translateY(-5px);
+    }
+
+    .product img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .product h3 {
+      font-size: 1rem;
+      margin: 0.5rem 0;
+    }
+
+    .product p {
+      color: #2c3e50;
+      font-weight: bold;
+    }
+
+    .product button {
+      margin-top: 0.5rem;
+      padding: 0.5rem 1rem;
+      background-color: #000000;
+      border: none;
+      color: rgb(255, 255, 255);
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .cart-link {
+      background-color: #e74c3c;
+      color: white;
+      padding: 0.4rem 0.8rem;
+      border-radius: 5px;
+      text-align: center;
+      margin-top: 1rem;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    /* Badge do carrinho */
+.cart-badge {
+  position: absolute;
+  top: 6px;
+  right: 18px;
+  background-color: red;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 999px;
+  line-height: 1;
+}
+
+    #mensagemCompra {
+      position: fixed;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #2ecc71;
+      color: rgb(32, 27, 27);
+      padding: 0.8rem 1.2rem;
+      border-radius: 14px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      font-weight: bold;
+      display: none;
+      z-index: 9999;
+      font-size: 0.9rem;
+      max-width: 90%;
+      text-align: center;
+      transition: 5s;
+    }
+
+  </style>
+
+  <title>Loja Online</title>
+</head>
+<body>
+  <header>
+<div class="search-box">
+  <input type="text" id="searchInput" placeholder="Buscar produto...">
+  <button onclick="searchProducts()"><i class="fas fa-search"></i></button>
+</div>
+<p><br><h1>Em breve disponivel...</h1></p>
+  </header>
+
+<!-- MENU ESTILO SHOPEE NO RODAPÉ -->
+<nav class="bottom-nav">
+  <a href="index.html" class="nav-item">
+    <i class="fas fa-home"></i>
+    <span>Início</span>
+  </a>
+  <a href="#" class="nav-item">
+    <i class="fas fa-tags"></i>
+    <span>Ofertas</span>
+  </a>
+  <a href="contato.html" class="nav-item">
+    <i class="fas fa-phone"></i>
+    <span>Contato</span>
+  </a>
+<a href="carrinho.html" class="nav-item">
+  <i class="fas fa-shopping-cart"></i>
+  <span>Carrinho</span>
+  <span class="cart-badge" id="cartCount" style="display: none;">0</span>
+</a>
+</nav>
+
+  <div class="container" id="productContainer">
+    <!-- 10 produtos -->
+  </div>
+
+  <div id="mensagemCompra">
+    Seu item foi adicionado ao carrinho!
+  </div>
+
+  <script>
+    // Ao carregar a página, checa o carrinho armazenado no localStorage
+document.addEventListener("DOMContentLoaded", () => {
+  atualizarBadgeCarrinho();
+});
+
+    let cartCount = parseInt(localStorage.getItem("cartCount")) || 0;
+
+    const products = [
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    ];
+
+const container = document.getElementById("productContainer");
+products.forEach((produto) => {
+  const link = document.createElement("a");
+  link.href = `detalhes.html?nome=${encodeURIComponent(produto.nome)}&preco=${encodeURIComponent(produto.preco)}&imagem=${encodeURIComponent(produto.imagem)}&descricao=${encodeURIComponent(produto.descricao)}`;
+  link.style.textDecoration = "none";
+  link.style.color = "inherit";
+
+  link.innerHTML = `
+    <div class="product">
+      <img src="${produto.imagem}" alt="${produto.nome}">
+      <h3>${produto.nome}</h3>
+      <p>${produto.preco}</p>
+      <button onclick="event.preventDefault(); addToCart('${produto.nome}')">Adicionar ao carrinho</button>
+    </div>
+  `;
+  container.appendChild(link);
+});
+
+function searchProducts() {
+  const input = document.getElementById("searchInput").value.toLowerCase();
+  const productLinks = document.querySelectorAll("#productContainer a");
+  document.getElementById("searchInput").addEventListener("input", searchProducts);
+
+  productLinks.forEach((link) => {
+    const title = link.querySelector("h3").textContent.toLowerCase();
+    if (title.includes(input)) {
+      link.style.display = "block";
+    } else {
+      link.style.display = "none";
+    }
+  });
+}
+
+function addToCart(productName) {
+  const produto = products.find(p => p.nome === productName);
+  let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+  carrinho.push(produto);
+  localStorage.setItem("carrinho", JSON.stringify(carrinho));
+  mostrarMensagem("Seu item foi adicionado ao carrinho!");
+  atualizarBadgeCarrinho(); // <--- atualiza visualmente
+
+      // Atualizar o contador do carrinho no localStorage
+      cartCount++;
+      localStorage.setItem("cartCount", cartCount);
+      document.getElementById("cartCount").innerText = cartCount;
+      mostrarMensagem("Seu item foi adicionado ao carrinho!");
+    }
+
+    function mostrarMensagem(texto) {
+      const mensagem = document.getElementById("mensagemCompra");
+      mensagem.innerText = texto;
+      mensagem.style.display = "block";
+      mensagem.style.opacity = "1";
+      setTimeout(() => {
+        mensagem.style.opacity = "0";
+        setTimeout(() => {
+          mensagem.style.display = "none";
+        }, 500);
+      }, 2000);
+    }
+
+    function atualizarBadgeCarrinho() {
+  const badge = document.getElementById("cartCount");
+  const carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+  const count = carrinho.length;
+
+  if (count > 0) {
+    badge.innerText = count;
+    badge.style.display = "inline-block";
+  } else {
+    badge.style.display = "none";
+  }
+}
+  </script>
+
+  <script>
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
+      location.reload(); // força o recarregamento da página
+    }
+  });
+</script>
+
+</body>
+</html>
