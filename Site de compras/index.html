@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Loja Online</title>
+  <style>
+    /* [Mantém todos os estilos que você já tinha no <style>] */
+    body { margin: 0; font-family: Arial, sans-serif; background-color: #f7f7f7; padding: 0; }
+    header { background-color: #c5ee8fa6; color: white; padding: 1rem; text-align: center; border-bottom-right-radius: 50px; border-bottom-left-radius: 50px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); }
+    header h1 { margin: 0; font-size: 1.5rem; }
+    * { -webkit-tap-highlight-color: transparent; outline: none; }
+
+    .search-box {
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 1rem; padding: 0 1rem;
+    }
+    .search-box input {
+      flex: 1; padding: 0.8rem 1rem; border: none; border-radius: 15px;
+      outline: none; font-size: 1rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5); transition: box-shadow 0.3s ease;
+    }
+    .search-box input:focus {
+      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
+    }
+    .search-box button {
+      margin-left: -45px; background: none; border: none;
+      color: #000000; font-size: 1.4rem;
+    }
+
+    .bottom-nav {
+      position: fixed; bottom: 0; left: 0; right: 0; background-color: #fff;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
+      display: flex; justify-content: space-around; align-items: center;
+      padding: 8px 0; z-index: 1000; border-top-left-radius: 12px; border-top-right-radius: 12px;
+    }
+    .bottom-nav .nav-item {
+      flex: 1; text-align: center; color: #555; font-size: 12px;
+      text-decoration: none; transition: color 0.2s; position: relative;
+    }
+    .bottom-nav .nav-item i {
+      font-size: 20px; margin-bottom: 4px; display: block; transition: transform 0.2s ease;
+    }
+    .bottom-nav .nav-item:hover { color: #e67e22; }
+    .bottom-nav .nav-item:hover i { transform: scale(1.1); }
+
+    .container {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(154px, 1fr));
+      gap: 20px; padding: 20px;
+    }
+    .product {
+      background-color: white; border-radius: 10px; padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s; position: relative;
+    }
+    .product:hover { transform: translateY(-5px); }
+    .product img {
+      width: 100%; height: 180px; object-fit: cover; border-radius: 8px;
+    }
+    .product h3 { font-size: 1rem; margin: 0.5rem 0; }
+    .product p { color: #2c3e50; font-weight: bold; }
+    .product button {
+      margin-top: 0.5rem; padding: 0.5rem 1rem; background-color: #28a745;
+      border: none; color: #fff; border-radius: 12px; font-size: 15px; font-weight: bold; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3)
+    }
+    .product button:disabled { background-color: #eeafaf; cursor: not-allowed; }
+
+    .availability {
+      position: absolute; top: 8px; right: 8px;
+      background-color: #2ecc71; color: rgb(255, 255, 255);
+      padding: 2px 6px; border-radius: 20px; font-size: 12px; font-weight: bold;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    .unavailable { background-color: #e74c3c !important; }
+    .cart-badge {
+      position: absolute; top: 6px; right: 18px;
+      background-color: red; color: white; font-size: 10px;
+      font-weight: bold; padding: 2px 6px; border-radius: 999px; line-height: 1;
+    }
+    .container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(154px, 1fr));
+  gap: 20px;
+  padding: 20px;
+  padding-bottom: 100px; /* adicionado para evitar sobreposição */
+}
+
+    #mensagemCompra {
+      position: fixed; top: 10px; left: 50%; transform: translateX(-50%);
+      background-color: #fffae6; color: #000;
+      padding: 0.8rem 1.2rem; border-radius: 20px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+      font-weight: bold; display: none; z-index: 9999;
+      font-size: 1rem; max-width: 90%; text-align: center;
+    }
+
+#productModal {
+  display: none;
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5); z-index: 9999;
+  justify-content: center; align-items: center;
+}
+
+#productModal .modal-content {
+  background: #fff;
+  padding: 20px 24px;
+  border-radius: 12px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  position: relative;
+  animation: fadeIn 0.3s ease;
+  text-align: center;
+}
+#productModal img {
+  width: 100%;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+#productModal h2 {
+  margin-bottom: 8px;
+  font-size: 1.4rem;
+  color: #333;
+}
+#productModal p {
+  color: #555;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+#productModal span {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 35px;
+  font-weight: bold;
+  color: #000;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  padding: 1px 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#productModal span:hover {
+  background-color: #ffdddd;
+  transform: scale(1.1);
+}
+#productModal button {
+  background-color: #2ecc71;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+#productModal button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+  </style>
+</head>
+
+<body>
+  <header>
+    <img src="imagens/anagel1.png" alt="Logo da loja"
+         style="max-height: 250px; width: 250px; border-radius: 40px; display: block; margin: 0 auto; box-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);">
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Buscar produto...">
+      <button onclick="searchProducts()"><i class="fas fa-search"></i></button>
+    </div>
+  </header>
+
+<div id="infoLoja" style="background-color: #eeeeee; border-left: 5px solid #4CAF50; padding: 16px; margin: 20px 10px; border-radius: 22px; font-family: Arial, sans-serif; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);">
+  <h3 style="margin-top: 0; color: #333;">Bem-vindo a Minha Loja Online | Produtos, cama, mesa e banho!</h3>
+  <p style="margin: 10px 0;">
+    Nosso site foi criado para oferecer uma <strong>experiência prática, moderna e segura</strong>, com um visual limpo, navegação intuitiva e informações claras sobre cada item. Os produtos são organizados de forma acessível, e você pode acompanhar a <strong>disponibilidade em tempo real</strong>.
+  </p>
+  <p style="margin: 10px 0;">
+    Com <strong>atualizações constantes</strong>, garantimos que você tenha sempre as melhores novidades ao seu alcance. Basta navegar, escolher seus itens favoritos e adicioná-los ao carrinho com apenas um clique.
+  </p>
+  <p style="font-size: 14px; color: #555;">
+    Criado por <strong>(Ismael Vieira)</strong> - Versão atual: <strong>1.9.1</strong>  (atualizado em <strong>14/05/2025 às 15:05</strong> )<br>
+    <em>Agradecemos sua visita!!</em>
+  </p>
+</div>
+
+  <nav class="bottom-nav">
+    <a href="#" class="nav-item"><i class="fas fa-home"></i><span>Início</span></a>
+    <a href="ofertas.html" class="nav-item"><i class="fas fa-tags"></i><span>Ofertas</span></a>
+    <a href="contato.html" class="nav-item"><i class="fas fa-phone"></i><span>Contato</span></a>
+    <a href="carrinho.html" class="nav-item"><i class="fas fa-shopping-cart"></i><span>Carrinho</span>
+      <span class="cart-badge" id="cartCount" style="display: none;">0</span>
+    </a>
+  </nav>
+
+  <div class="container" id="productContainer"></div>
+  <div id="mensagemCompra">Seu item foi adicionado ao carrinho!</div>
+
+  <!-- Modal de detalhes do produto -->
+  <div id="productModal">
+    <div class="modal-content">
+      <span onclick="fecharModal()">&times;</span>
+      <img id="modalImagem" src="" alt="Produto" />
+      <h2 id="modalNome"></h2>
+      <p id="modalPreco" style="font-weight:bold;"></p>
+      <p id="modalDescricao"></p>
+      <button onclick="addToCartFromModal()">Adicionar ao carrinho</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      atualizarBadgeCarrinho();
+      document.getElementById("searchInput").addEventListener("input", searchProducts);
+    });
+
+    let cartCount = parseInt(localStorage.getItem("cartCount")) || 0;
+
+    const products = [
+      {
+        nome: "Gel Massageador",
+        preco: "R$ 54,00",
+        imagem: "imagens/Gel2.jpg",
+        descricao: "Gel para massagem com extrato natural de alecrim. Proporciona sensação de alívio e frescor.",
+        disponivel: true
+      },
+      {
+        nome: "Shampoo de Coco ",
+        preco: "R$ 24,00",
+        imagem: "imagens/Shampoo.jpg",
+        descricao: "Shampoo hidratante à base de coco para todos os tipos de cabelo.",
+        disponivel: true
+      },
+      {
+        nome: "Nome",
+        preco: "R$ 0,00",
+        imagem: "imagens/ttt.jpg",
+        descricao: "descrição...",
+        disponivel: false
+      },
+      {
+        nome: "Nome",
+        preco: "R$ 0,00",
+        imagem: "imagens/ttt.jpg",
+        descricao: "descrição...",
+        disponivel: false
+      },
+      {
+        nome: "Nome",
+        preco: "R$ 0,00",
+        imagem: "imagens/ttt.jpg",
+        descricao: "descrição...",
+        disponivel: false
+      },
+      {
+        nome: "Nome",
+        preco: "R$ 0,00",
+        imagem: "imagens/ttt.jpg",
+        descricao: "descrição...",
+        disponivel: false
+      },
+      {
+        nome: "Nome",
+        preco: "R$ 0,00",
+        imagem: "imagens/ttt.jpg",
+        descricao: "descrição...",
+        disponivel: false
+      },
+      {
+        nome: "Nome",
+        preco: "R$ 0,00",
+        imagem: "imagens/ttt.jpg",
+        descricao: "descrição...",
+        disponivel: false
+      },
+      {
+        nome: "Nome",
+        preco: "R$ 0,00",
+        imagem: "imagens/ttt.jpg",
+        descricao: "descrição...",
+        disponivel: false
+      },
+      {
+        nome: "Nome",
+        preco: "R$ 0,00",
+        imagem: "imagens/ttt.jpg",
+        descricao: "descrição...",
+        disponivel: false
+      },
+    ];
+
+    const container = document.getElementById("productContainer");
+    products.forEach((produto) => {
+      const link = document.createElement("div");
+link.classList.add("product-link");
+      link.href = "#";
+      link.style.textDecoration = "none";
+      link.style.color = "inherit";
+
+      const disponibilidade = produto.disponivel ? "Disponível" : "Indisponível";
+      const badgeClass = produto.disponivel ? "" : "unavailable";
+      const disabled = produto.disponivel ? "" : "disabled";
+
+      link.innerHTML = `
+        <div class="product" onclick="abrirModal('${produto.nome}')">
+          <span class="availability ${badgeClass}">${disponibilidade}</span>
+          <img src="${produto.imagem}" alt="${produto.nome}">
+          <h3>${produto.nome}</h3>
+          <p>${produto.preco}</p>
+          <button ${disabled} onclick="event.stopPropagation(); addToCart('${produto.nome}')">Adicionar ao carrinho</button>
+        </div>
+      `;
+      container.appendChild(link);
+    });
+
+    function searchProducts() {
+  const input = document.getElementById("searchInput").value.toLowerCase();
+  const productLinks = document.querySelectorAll("#productContainer .product-link");
+  const infoLoja = document.getElementById("infoLoja"); // <--- Aqui pegamos a div
+
+  let algumProdutoVisivel = false;
+
+  productLinks.forEach((link) => {
+    const title = link.querySelector("h3").textContent.toLowerCase();
+    if (!input || title.includes(input)) {
+      link.style.display = "block";
+      algumProdutoVisivel = true;
+    } else {
+      link.style.display = "none";
+    }
+  });
+
+  // Oculta infoLoja se houver texto na pesquisa, mostra se estiver vazio
+  if (input.trim() !== "") {
+    infoLoja.style.display = "none";
+  } else {
+    infoLoja.style.display = "block";
+  }
+}
+
+    function addToCart(productName) {
+      const produto = products.find(p => p.nome === productName);
+      let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+      carrinho.push(produto);
+      localStorage.setItem("carrinho", JSON.stringify(carrinho));
+      mostrarMensagem("✅ Seu item foi adicionado ao carrinho! 🛒👍");
+      cartCount++;
+      localStorage.setItem("cartCount", cartCount);
+      document.getElementById("cartCount").innerText = cartCount;
+      atualizarBadgeCarrinho();
+    }
+
+    function mostrarMensagem(texto) {
+      const mensagem = document.getElementById("mensagemCompra");
+      mensagem.innerText = texto;
+      mensagem.style.display = "block";
+      setTimeout(() => {
+        mensagem.style.display = "none";
+      }, 3000);
+    }
+
+    function atualizarBadgeCarrinho() {
+      const badge = document.getElementById("cartCount");
+      const carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+      const count = carrinho.length;
+      if (count > 0) {
+        badge.innerText = count;
+        badge.style.display = "inline-block";
+      } else {
+        badge.style.display = "none";
+      }
+    }
+
+function abrirModal(nome) {
+  const produto = products.find(p => p.nome === nome);
+  document.getElementById("modalImagem").src = produto.imagem;
+  document.getElementById("modalNome").innerText = produto.nome;
+  document.getElementById("modalPreco").innerText = produto.preco;
+  document.getElementById("modalDescricao").innerText = produto.descricao;
+
+  const botao = document.querySelector("#productModal button");
+  if (produto.disponivel) {
+    botao.disabled = false;
+    botao.innerText = "Adicionar ao carrinho";
+  } else {
+    botao.disabled = true;
+    botao.innerText = "Indisponível";
+  }
+
+  document.getElementById("productModal").style.display = "flex";
+  window.produtoAtual = produto;
+}
+
+    function fecharModal() {
+      document.getElementById("productModal").style.display = "none";
+    }
+
+function addToCartFromModal() {
+  if (window.produtoAtual && window.produtoAtual.disponivel) {
+    addToCart(window.produtoAtual.nome);
+    fecharModal();
+  }
+}
+
+    window.addEventListener("pageshow", function (event) {
+      if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
+        location.reload();
+      }
+    });
+  </script>
+</body>
+</html>
