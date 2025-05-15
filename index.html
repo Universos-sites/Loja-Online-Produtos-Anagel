@@ -7,188 +7,405 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <title>Loja Online</title>
   <style>
-    /* [Mantém todos os estilos que você já tinha no <style>] */
-    body { margin: 0; font-family: Arial, sans-serif; background-color: #f7f7f7; padding: 0; }
-    header { background-color: #c5ee8fa6; color: white; padding: 1rem; text-align: center; border-bottom-right-radius: 50px; border-bottom-left-radius: 50px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); }
-    header h1 { margin: 0; font-size: 1.5rem; }
-    * { -webkit-tap-highlight-color: transparent; outline: none; }
+    /* Estilos Globais e Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+      outline: none;
+    }
 
+    html {
+      font-size: 16px; /* Base para unidades rem */
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      line-height: 1.6;
+    }
+
+    /* Cabeçalho */
+    header {
+      background-color: #a7f048a6;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+      border-bottom-right-radius: 2.8125rem; /* 45px / 16px */
+      border-bottom-left-radius: 2.8125rem; /* 45px / 16px */
+      box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.4); /* 2px 6px */
+    }
+
+    header img.logo-principal {
+        max-height: 15.625rem; /* 250px */
+        width: 100%;
+        max-width: 15.625rem; /* 250px */
+        border-radius: 3.125rem; /* 50px */
+        display: block;
+        margin: 0 auto 1rem;
+        box-shadow: 0 0.125rem 0.9375rem rgba(0, 0, 0, 0.4); /* 2px 15px */
+    }
+
+    header h1 { /* Se houver um h1 no header, estilizar aqui */
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    /* Caixa de Busca */
     .search-box {
-      display: flex; align-items: center; justify-content: center;
-      margin-top: 1rem; padding: 0 1rem;
-    }
-    .search-box input {
-      flex: 1; padding: 0.8rem 1rem; border: none; border-radius: 15px;
-      outline: none; font-size: 1rem;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5); transition: box-shadow 0.3s ease;
-    }
-    .search-box input:focus {
-      box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
-    }
-    .search-box button {
-      margin-left: -45px; background: none; border: none;
-      color: #000000; font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1rem;
+      padding: 0 1rem;
     }
 
+    .search-box input {
+      flex: 1;
+      padding: 0.8rem 1rem;
+      border: none;
+      border-radius: 1.875rem; /* 30px */
+      outline: none;
+      font-size: 1rem;
+      box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.1);
+      transition: box-shadow 0.3s ease;
+      max-width: calc(100% - 3rem); /* Para acomodar o botão */
+    }
+
+    .search-box input:focus {
+      box-shadow: 0 0 0 0.1875rem rgba(52, 152, 219, 0.3); /* 3px */
+    }
+
+    .search-box button {
+      margin-left: -2.8125rem; /* -45px */
+      background: none;
+      border: none;
+      color: #3498db;
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    /* Navegação Inferior */
     .bottom-nav {
-      position: fixed; bottom: 0; left: 0; right: 0; background-color: #fff;
-      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.08);
-      display: flex; justify-content: space-around; align-items: center;
-      padding: 8px 0; z-index: 1000; border-top-left-radius: 12px; border-top-right-radius: 12px;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background-color: #fff;
+      box-shadow: 0 -0.125rem 0.625rem rgba(0, 0, 0, 0.08); /* -2px 10px */
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0.5rem 0; /* 8px */
+      z-index: 1000;
+      border-top-left-radius: 0.75rem; /* 12px */
+      border-top-right-radius: 0.75rem; /* 12px */
     }
+
     .bottom-nav .nav-item {
-      flex: 1; text-align: center; color: #555; font-size: 12px;
-      text-decoration: none; transition: color 0.2s; position: relative;
+      flex: 1;
+      text-align: center;
+      color: #555;
+      font-size: 0.75rem; /* 12px */
+      text-decoration: none;
+      transition: color 0.2s;
+      position: relative;
+      padding: 0.25rem 0;
     }
+
     .bottom-nav .nav-item i {
-      font-size: 20px; margin-bottom: 4px; display: block; transition: transform 0.2s ease;
+      font-size: 1.25rem; /* 20px */
+      margin-bottom: 0.25rem; /* 4px */
+      display: block;
+      transition: transform 0.2s ease;
     }
+
     .bottom-nav .nav-item:hover { color: #e67e22; }
     .bottom-nav .nav-item:hover i { transform: scale(1.1); }
 
+    /* Container de Produtos */
     .container {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(154px, 1fr));
-      gap: 20px; padding: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(9.625rem, 1fr)); /* 154px */
+      gap: 1.25rem; /* 20px */
+      padding: 1.25rem; /* 20px */
+      padding-bottom: 6.25rem; /* 100px, para evitar sobreposição com bottom-nav */
     }
+
+    /* Card de Produto */
     .product {
-      background-color: white; border-radius: 10px; padding: 1rem;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); transition: transform 0.3s; position: relative;
+      background-color: white;
+      border-radius: 0.625rem; /* 10px */
+      padding: 1rem;
+      box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.1); /* 2px 8px */
+      transition: transform 0.3s;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
-    .product:hover { transform: translateY(-5px); }
+
+    .product:hover { transform: translateY(-0.3125rem); } /* -5px */
+
     .product img {
-      width: 100%; height: 180px; object-fit: cover; border-radius: 8px;
+      width: 100%;
+      height: 11.25rem; /* 180px */
+      object-fit: cover;
+      border-radius: 0.5rem; /* 8px */
     }
-    .product h3 { font-size: 1rem; margin: 0.5rem 0; }
-    .product p { color: #2c3e50; font-weight: bold; }
+
+    .product h3 {
+      font-size: 1rem;
+      margin: 0.5rem 0;
+      word-wrap: break-word;
+    }
+
+    .product p.price {
+      color: #2c3e50;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
     .product button {
-      margin-top: 0.5rem; padding: 0.5rem 1rem; background-color: #28a745;
-      border: none; color: #fff; border-radius: 12px; font-size: 15px; font-weight: bold; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3)
+      margin-top: 0.5rem;
+      padding: 0.5rem 1rem;
+      background-color: #28a745;
+      border: none;
+      color: #fff;
+      border-radius: 0.75rem; /* 12px */
+      font-size: 0.9375rem; /* 15px */
+      font-weight: bold;
+      box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.3); /* 2px 5px */
+      cursor: pointer;
     }
-    .product button:disabled { background-color: #eeafaf; cursor: not-allowed; }
 
+    .product button:disabled {
+      background-color: #eeafaf;
+      cursor: not-allowed;
+    }
+
+    /* Badge de Disponibilidade */
     .availability {
-      position: absolute; top: 8px; right: 8px;
-      background-color: #2ecc71; color: rgb(255, 255, 255);
-      padding: 2px 6px; border-radius: 20px; font-size: 12px; font-weight: bold;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      position: absolute;
+      top: 0.5rem; /* 8px */
+      right: 0.5rem; /* 8px */
+      background-color: #2ecc71;
+      color: white;
+      padding: 0.125rem 0.375rem; /* 2px 6px */
+      border-radius: 1.25rem; /* 20px */
+      font-size: 0.75rem; /* 12px */
+      font-weight: bold;
+      box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.5); /* 2px 4px */
     }
+
     .unavailable { background-color: #e74c3c !important; }
+
+    /* Badge do Carrinho na Navegação */
     .cart-badge {
-      position: absolute; top: 6px; right: 18px;
-      background-color: red; color: white; font-size: 10px;
-      font-weight: bold; padding: 2px 6px; border-radius: 999px; line-height: 1;
+      position: absolute;
+      top: 0.375rem; /* 6px */
+      right: 1.125rem; /* 18px */
+      background-color: red;
+      color: white;
+      font-size: 0.625rem; /* 10px */
+      font-weight: bold;
+      padding: 0.125rem 0.375rem; /* 2px 6px */
+      border-radius: 50%; /* Para manter redondo */
+      line-height: 1;
+      min-width: 1.25rem; /* Para garantir que o número caiba */
+      height: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
-    .container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(154px, 1fr));
-  gap: 20px;
-  padding: 20px;
-  padding-bottom: 100px; /* adicionado para evitar sobreposição */
-}
 
+    /* Mensagem de Compra */
     #mensagemCompra {
-      position: fixed; top: 10px; left: 50%; transform: translateX(-50%);
-      background-color: #fffae6; color: #000;
-      padding: 0.8rem 1.2rem; border-radius: 20px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-      font-weight: bold; display: none; z-index: 9999;
-      font-size: 1rem; max-width: 90%; text-align: center;
+      position: fixed;
+      top: 0.625rem; /* 10px */
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #fffae6;
+      color: #000;
+      padding: 0.8rem 1.2rem;
+      border-radius: 1.25rem; /* 20px */
+      box-shadow: 0 0.125rem 0.625rem rgba(0,0,0,0.2); /* 2px 10px */
+      font-weight: bold;
+      display: none;
+      z-index: 9999;
+      font-size: 1rem;
+      max-width: 90%;
+      text-align: center;
     }
 
-#productModal {
-  display: none;
-  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-  background: rgba(0, 0, 0, 0.5); z-index: 9999;
-  justify-content: center; align-items: center;
-}
+    /* Modal de Produto */
+    #productModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
 
-#productModal .modal-content {
-  background: #fff;
-  padding: 20px 24px;
-  border-radius: 12px;
-  max-width: 400px;
-  width: 90%;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-  position: relative;
-  animation: fadeIn 0.3s ease;
-  text-align: center;
-}
-#productModal img {
-  width: 100%;
-  border-radius: 8px;
-  margin-bottom: 15px;
-}
-#productModal h2 {
-  margin-bottom: 8px;
-  font-size: 1.4rem;
-  color: #333;
-}
-#productModal p {
-  color: #555;
-  font-size: 1rem;
-  margin-bottom: 10px;
-}
-#productModal span {
-  position: absolute;
-  top: 12px;
-  right: 16px;
-  font-size: 35px;
-  font-weight: bold;
-  color: #000;
-  background-color: rgba(255, 255, 255, 0.8);
-  border-radius: 50%;
-  padding: 1px 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
-  z-index: 999;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
+    #productModal .modal-content {
+      background: #fff;
+      padding: 1.25rem 1.5rem; /* 20px 24px */
+      border-radius: 0.75rem; /* 12px */
+      max-width: 25rem; /* 400px */
+      width: 90%;
+      box-shadow: 0 0.375rem 1.25rem rgba(0, 0, 0, 0.2); /* 6px 20px */
+      position: relative;
+      animation: fadeIn 0.3s ease;
+      text-align: center;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
 
-#productModal span:hover {
-  background-color: #ffdddd;
-  transform: scale(1.1);
-}
-#productModal button {
-  background-color: #2ecc71;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 20px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-#productModal button:disabled {
-  background-color: #aaa;
-  cursor: not-allowed;
-}
-@keyframes fadeIn {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
-}
+    #productModal img {
+      width: 100%;
+      max-height: 15rem; /* Limitar altura da imagem no modal */
+      object-fit: contain;
+      border-radius: 0.5rem; /* 8px */
+      margin-bottom: 1rem; /* 15px */
+    }
+
+    #productModal h2 {
+      margin-bottom: 0.5rem; /* 8px */
+      font-size: 1.4rem;
+      color: #333;
+    }
+
+    #productModal p {
+      color: #555;
+      font-size: 1rem;
+      margin-bottom: 0.625rem; /* 10px */
+    }
+    #productModal p.price-modal {
+        font-weight: bold;
+        font-size: 1.2rem;
+        color: #2c3e50;
+    }
+
+    #productModal .close-modal {
+      position: absolute;
+      top: 0.75rem; /* 12px */
+      right: 1rem; /* 16px */
+      font-size: 2.1875rem; /* 35px */
+      font-weight: bold;
+      color: #000;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      width: 2.5rem; /* Ajustar para ser um círculo */
+      height: 2.5rem;
+      line-height: 2.5rem; /* Centralizar o X */
+      text-align: center;
+      box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.5); /* 2px 6px */
+      z-index: 999;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    #productModal .close-modal:hover {
+      background-color: #ffdddd;
+      transform: scale(1.1);
+    }
+
+    #productModal button {
+      background-color: #2ecc71;
+      color: white;
+      padding: 0.625rem 1.25rem; /* 10px 20px */
+      border: none;
+      border-radius: 1.25rem; /* 20px */
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      width: 100%;
+      margin-top: 0.5rem;
+    }
+
+    #productModal button:disabled {
+      background-color: #aaa;
+      cursor: not-allowed;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    /* Informações da Loja */
+    #infoLoja {
+        background-color: #eeeeee;
+        border-left: 0.3125rem solid #4CAF50; /* 5px */
+        padding: 1rem;
+        margin: 1.25rem 0.625rem; /* 20px 10px */
+        border-radius: 1.375rem; /* 22px */
+        font-family: Arial, sans-serif;
+        box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.3); /* 2px 6px */
+    }
+    #infoLoja h3 {
+        margin-top: 0;
+        color: #333;
+        font-size: 1.1rem;
+    }
+    #infoLoja p {
+        margin: 0.625rem 0; /* 10px */
+        font-size: 0.9rem;
+        line-height: 1.5;
+    }
+    #infoLoja p.details {
+        font-size: 0.875rem; /* 14px */
+        color: #555;
+    }
+
+    /* Media Queries para responsividade adicional, se necessário */
+    @media (max-width: 360px) { /* Telas muito pequenas */
+        html {
+            font-size: 14px; /* Reduzir base da fonte */
+        }
+        .product h3 {
+            font-size: 0.9rem;
+        }
+        .bottom-nav .nav-item i {
+            font-size: 1.1rem;
+        }
+        .bottom-nav .nav-item span {
+            font-size: 0.65rem;
+        }
+        #productModal h2 {
+            font-size: 1.2rem;
+        }
+    }
+
   </style>
 </head>
 
 <body>
   <header>
-    <img src="imagens/anagel1.png" alt="Logo da loja"
-         style="max-height: 250px; width: 250px; border-radius: 40px; display: block; margin: 0 auto; box-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);">
+    <img src="imagens/Logo oficial.jpeg" alt="Logo da loja" class="logo-principal">
     <div class="search-box">
       <input type="text" id="searchInput" placeholder="Buscar produto...">
       <button onclick="searchProducts()"><i class="fas fa-search"></i></button>
     </div>
   </header>
 
-<div id="infoLoja" style="background-color: #eeeeee; border-left: 5px solid #4CAF50; padding: 16px; margin: 20px 10px; border-radius: 22px; font-family: Arial, sans-serif; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);">
-  <h3 style="margin-top: 0; color: #333;">Bem-vindo a Minha Loja Online | Produtos, cama, mesa e banho!</h3>
-  <p style="margin: 10px 0;">
+<div id="infoLoja">
+  <h3>Bem-vindo a Minha Loja Online | Produtos, cama, mesa e banho!</h3>
+  <p>
     Nosso site foi criado para oferecer uma <strong>experiência prática, moderna e segura</strong>, com um visual limpo, navegação intuitiva e informações claras sobre cada item. Os produtos são organizados de forma acessível, e você pode acompanhar a <strong>disponibilidade em tempo real</strong>.
   </p>
-  <p style="margin: 10px 0;">
+  <p>
     Com <strong>atualizações constantes</strong>, garantimos que você tenha sempre as melhores novidades ao seu alcance. Basta navegar, escolher seus itens favoritos e adicioná-los ao carrinho com apenas um clique.
   </p>
-  <p style="font-size: 14px; color: #555;">
+  <p class="details">
     Criado por <strong>(Ismael Vieira)</strong> - Versão atual: <strong>1.9.1</strong>  (atualizado em <strong>14/05/2025 às 15:05</strong> )<br>
     <em>Agradecemos sua visita!!</em>
   </p>
@@ -209,10 +426,10 @@
   <!-- Modal de detalhes do produto -->
   <div id="productModal">
     <div class="modal-content">
-      <span onclick="fecharModal()">&times;</span>
+      <span class="close-modal" onclick="fecharModal()">&times;</span>
       <img id="modalImagem" src="" alt="Produto" />
       <h2 id="modalNome"></h2>
-      <p id="modalPreco" style="font-weight:bold;"></p>
+      <p id="modalPreco" class="price-modal"></p>
       <p id="modalDescricao"></p>
       <button onclick="addToCartFromModal()">Adicionar ao carrinho</button>
     </div>
@@ -228,7 +445,7 @@
 
     const products = [
       {
-        nome: "Gel Massageador",
+        nome: "Gel Massageador Extreme",
         preco: "R$ 54,00",
         imagem: "imagens/Gel2.jpg",
         descricao: "Gel para massagem com extrato natural de alecrim. Proporciona sensação de alívio e frescor.",
@@ -242,121 +459,113 @@
         disponivel: true
       },
       {
-        nome: "Nome",
-        preco: "R$ 0,00",
-        imagem: "imagens/ttt.jpg",
-        descricao: "descrição...",
+        nome: "Creme Hidratante Facial",
+        preco: "R$ 35,50",
+        imagem: "imagens/Creme.jpg",
+        descricao: "Creme facial com aloe vera e vitaminas, para todos os tipos de pele.",
+        disponivel: true
+      },
+      {
+        nome: "Sabonete Líquido Erva Doce",
+        preco: "R$ 18,90",
+        imagem: "imagens/Gel.jpg", /* Usando imagem genérica, idealmente seria uma de sabonete */
+        descricao: "Sabonete líquido suave com fragrância de erva doce, para mãos e corpo.",
+        disponivel: true
+      },
+      {
+        nome: "Kit Capilar Argan",
+        preco: "R$ 75,00",
+        imagem: "imagens/Cap.png",
+        descricao: "Kit completo com shampoo, condicionador e máscara de tratamento com óleo de argan.",
         disponivel: false
       },
       {
-        nome: "Nome",
-        preco: "R$ 0,00",
-        imagem: "imagens/ttt.jpg",
-        descricao: "descrição...",
+        nome: "Óleo Corporal Amêndoas",
+        preco: "R$ 29,90",
+        imagem: "imagens/Cap2.png", /* Usando imagem genérica */
+        descricao: "Óleo corporal hidratante com óleo de amêndoas doces, pele macia e perfumada.",
+        disponivel: true
+      },
+      {
+        nome: "Toalha de Banho Algodão Egípcio",
+        preco: "R$ 89,00",
+        imagem: "imagens/ttt.jpg", /* Placeholder */
+        descricao: "Toalha de banho super macia e absorvente, feita com algodão egípcio.",
+        disponivel: true
+      },
+      {
+        nome: "Jogo de Cama Casal Floral",
+        preco: "R$ 199,00",
+        imagem: "imagens/Fundo.jpg", /* Placeholder */
+        descricao: "Jogo de cama para casal com estampa floral, 4 peças em percal 200 fios.",
         disponivel: false
       },
       {
-        nome: "Nome",
-        preco: "R$ 0,00",
-        imagem: "imagens/ttt.jpg",
-        descricao: "descrição...",
-        disponivel: false
+        nome: "Aromatizador de Ambientes Lavanda",
+        preco: "R$ 42,00",
+        imagem: "imagens/flora.png", /* Placeholder */
+        descricao: "Aromatizador de ambientes em spray com óleo essencial de lavanda, para relaxamento.",
+        disponivel: true
       },
       {
-        nome: "Nome",
-        preco: "R$ 0,00",
-        imagem: "imagens/ttt.jpg",
-        descricao: "descrição...",
-        disponivel: false
-      },
-      {
-        nome: "Nome",
-        preco: "R$ 0,00",
-        imagem: "imagens/ttt.jpg",
-        descricao: "descrição...",
-        disponivel: false
-      },
-      {
-        nome: "Nome",
-        preco: "R$ 0,00",
-        imagem: "imagens/ttt.jpg",
-        descricao: "descrição...",
-        disponivel: false
-      },
-      {
-        nome: "Nome",
-        preco: "R$ 0,00",
-        imagem: "imagens/ttt.jpg",
-        descricao: "descrição...",
-        disponivel: false
-      },
-      {
-        nome: "Nome",
-        preco: "R$ 0,00",
-        imagem: "imagens/ttt.jpg",
-        descricao: "descrição...",
-        disponivel: false
+        nome: "Vela Aromática Baunilha",
+        preco: "R$ 38,00",
+        imagem: "imagens/flora 2.png", /* Placeholder */
+        descricao: "Vela aromática feita com cera vegetal e essência de baunilha, longa duração.",
+        disponivel: true
       },
     ];
 
     const container = document.getElementById("productContainer");
     products.forEach((produto) => {
-      const link = document.createElement("div");
-link.classList.add("product-link");
-      link.href = "#";
-      link.style.textDecoration = "none";
-      link.style.color = "inherit";
+      const productCard = document.createElement("div"); // Alterado de link para div, pois o clique já é no card
+      productCard.classList.add("product");
+      productCard.onclick = () => abrirModal(produto.nome); // Adiciona evento de clique no card
 
       const disponibilidade = produto.disponivel ? "Disponível" : "Indisponível";
       const badgeClass = produto.disponivel ? "" : "unavailable";
       const disabled = produto.disponivel ? "" : "disabled";
 
-      link.innerHTML = `
-        <div class="product" onclick="abrirModal('${produto.nome}')">
+      productCard.innerHTML = `
           <span class="availability ${badgeClass}">${disponibilidade}</span>
           <img src="${produto.imagem}" alt="${produto.nome}">
           <h3>${produto.nome}</h3>
-          <p>${produto.preco}</p>
-          <button ${disabled} onclick="event.stopPropagation(); addToCart('${produto.nome}')">Adicionar ao carrinho</button>
-        </div>
+          <p class="price">${produto.preco}</p>
+          <button ${disabled} onclick="event.stopPropagation(); addToCart(\'${produto.nome}\')">Adicionar ao carrinho</button>
       `;
-      container.appendChild(link);
+      container.appendChild(productCard);
     });
 
     function searchProducts() {
-  const input = document.getElementById("searchInput").value.toLowerCase();
-  const productLinks = document.querySelectorAll("#productContainer .product-link");
-  const infoLoja = document.getElementById("infoLoja"); // <--- Aqui pegamos a div
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const productCards = document.querySelectorAll("#productContainer .product");
+      const infoLoja = document.getElementById("infoLoja");
 
-  let algumProdutoVisivel = false;
+      productCards.forEach((card) => {
+        const title = card.querySelector("h3").textContent.toLowerCase();
+        if (!input || title.includes(input)) {
+          card.style.display = "flex"; // Manter flex para alinhamento interno
+        } else {
+          card.style.display = "none";
+        }
+      });
 
-  productLinks.forEach((link) => {
-    const title = link.querySelector("h3").textContent.toLowerCase();
-    if (!input || title.includes(input)) {
-      link.style.display = "block";
-      algumProdutoVisivel = true;
-    } else {
-      link.style.display = "none";
+      if (input.trim() !== "") {
+        infoLoja.style.display = "none";
+      } else {
+        infoLoja.style.display = "block";
+      }
     }
-  });
-
-  // Oculta infoLoja se houver texto na pesquisa, mostra se estiver vazio
-  if (input.trim() !== "") {
-    infoLoja.style.display = "none";
-  } else {
-    infoLoja.style.display = "block";
-  }
-}
 
     function addToCart(productName) {
       const produto = products.find(p => p.nome === productName);
+      if (!produto || !produto.disponivel) return; // Não adiciona se não encontrar ou indisponível
+
       let carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
       carrinho.push(produto);
       localStorage.setItem("carrinho", JSON.stringify(carrinho));
       mostrarMensagem("✅ Seu item foi adicionado ao carrinho! 🛒👍");
-      cartCount++;
-      localStorage.setItem("cartCount", cartCount);
-      document.getElementById("cartCount").innerText = cartCount;
+      // cartCount não é mais necessário aqui, pois atualizarBadgeCarrinho pega do localStorage
       atualizarBadgeCarrinho();
     }
 
@@ -375,46 +584,59 @@ link.classList.add("product-link");
       const count = carrinho.length;
       if (count > 0) {
         badge.innerText = count;
-        badge.style.display = "inline-block";
+        badge.style.display = "flex"; // Usar flex para centralizar o número
       } else {
         badge.style.display = "none";
       }
     }
 
-function abrirModal(nome) {
-  const produto = products.find(p => p.nome === nome);
-  document.getElementById("modalImagem").src = produto.imagem;
-  document.getElementById("modalNome").innerText = produto.nome;
-  document.getElementById("modalPreco").innerText = produto.preco;
-  document.getElementById("modalDescricao").innerText = produto.descricao;
+    function abrirModal(nome) {
+      const produto = products.find(p => p.nome === nome);
+      if (!produto) return;
 
-  const botao = document.querySelector("#productModal button");
-  if (produto.disponivel) {
-    botao.disabled = false;
-    botao.innerText = "Adicionar ao carrinho";
-  } else {
-    botao.disabled = true;
-    botao.innerText = "Indisponível";
-  }
+      document.getElementById("modalImagem").src = produto.imagem;
+      document.getElementById("modalImagem").alt = produto.nome; // Adicionar alt text
+      document.getElementById("modalNome").innerText = produto.nome;
+      document.getElementById("modalPreco").innerText = produto.preco;
+      document.getElementById("modalDescricao").innerText = produto.descricao;
 
-  document.getElementById("productModal").style.display = "flex";
-  window.produtoAtual = produto;
-}
+      const botao = document.querySelector("#productModal button");
+      if (produto.disponivel) {
+        botao.disabled = false;
+        botao.innerText = "Adicionar ao carrinho";
+      } else {
+        botao.disabled = true;
+        botao.innerText = "Indisponível";
+      }
+
+      document.getElementById("productModal").style.display = "flex";
+      window.produtoAtualModal = produto; // Renomeado para evitar conflito
+    }
 
     function fecharModal() {
       document.getElementById("productModal").style.display = "none";
     }
 
-function addToCartFromModal() {
-  if (window.produtoAtual && window.produtoAtual.disponivel) {
-    addToCart(window.produtoAtual.nome);
-    fecharModal();
-  }
-}
+    function addToCartFromModal() {
+      if (window.produtoAtualModal && window.produtoAtualModal.disponivel) {
+        addToCart(window.produtoAtualModal.nome);
+        // Não fechar o modal automaticamente, pode ser confuso.
+        // O usuário pode querer adicionar mais de um ou apenas ver.
+        // fecharModal(); 
+      }
+    }
 
+    // Recarregar a página ao usar botões de voltar/avançar para atualizar o carrinho
     window.addEventListener("pageshow", function (event) {
-      if (event.persisted || performance.getEntriesByType("navigation")[0].type === "back_forward") {
-        location.reload();
+      const historyTraversal = event.persisted || 
+                             (typeof window.performance != "undefined" && 
+                                  window.performance.getEntriesByType("navigation")[0] &&
+                                  window.performance.getEntriesByType("navigation")[0].type === "back_forward");
+      if (historyTraversal) {
+        // Atualiza o badge sem recarregar a página inteira, se possível
+        atualizarBadgeCarrinho(); 
+        // Se precisar recarregar para outros estados, descomente:
+        // window.location.reload();
       }
     });
   </script>
