@@ -9,7 +9,7 @@
   <style>
     /* [Mantém todos os estilos que você já tinha no <style>] */
     body { margin: 0; font-family: Arial, sans-serif; background-color: #f7f7f7; padding: 0; }
-    header { background-color: #a7f048a6; color: white; padding: 1rem; text-align: center; border-bottom-right-radius: 45px; border-bottom-left-radius: 45px;
+    header { background-color: #c5ee8fa6; color: white; padding: 1rem; text-align: center; border-bottom-right-radius: 50px; border-bottom-left-radius: 50px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4); }
     header h1 { margin: 0; font-size: 1.5rem; }
     * { -webkit-tap-highlight-color: transparent; outline: none; }
@@ -19,16 +19,16 @@
       margin-top: 1rem; padding: 0 1rem;
     }
     .search-box input {
-      flex: 1; padding: 0.8rem 1rem; border: none; border-radius: 30px;
+      flex: 1; padding: 0.8rem 1rem; border: none; border-radius: 15px;
       outline: none; font-size: 1rem;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); transition: box-shadow 0.3s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5); transition: box-shadow 0.3s ease;
     }
     .search-box input:focus {
       box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.3);
     }
     .search-box button {
       margin-left: -45px; background: none; border: none;
-      color: #3498db; font-size: 1.2rem; cursor: pointer;
+      color: #000000; font-size: 1.4rem;
     }
 
     .bottom-nav {
@@ -172,8 +172,8 @@
 
 <body>
   <header>
-    <img src="imagens/Logo oficial.jpeg" alt="Logo da loja"
-         style="max-height: 250px; width: 250px; border-radius: 50px; display: block; margin: 0 auto; box-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);">
+    <img src="imagens/anagel1.png" alt="Logo da loja"
+         style="max-height: 250px; width: 250px; border-radius: 40px; display: block; margin: 0 auto; box-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);">
     <div class="search-box">
       <input type="text" id="searchInput" placeholder="Buscar produto...">
       <button onclick="searchProducts()"><i class="fas fa-search"></i></button>
@@ -228,7 +228,7 @@
 
     const products = [
       {
-        nome: "Gel Massageador Extreme",
+        nome: "Gel Massageador",
         preco: "R$ 54,00",
         imagem: "imagens/Gel2.jpg",
         descricao: "Gel para massagem com extrato natural de alecrim. Proporciona sensação de alívio e frescor.",
